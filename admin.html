@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Admin</title></head>
+<body style="background:#121212;color:#fff;font-family:Arial;max-width:800px;margin:auto;padding:20px">
+<h1>Admin FFML Checker</h1>
+<p>Password default: admin123 (ganti di kode)</p>
+<input type="password" id="pw" placeholder="Password">
+<button onclick="login()">Login</button>
+<div id="panel" style="display:none">
+<select id="game"><option value="freefire">Free Fire</option><option value="mobilelegends">Mobile Legends</option></select>
+<input id="idakun" placeholder="ID Akun">
+<textarea id="alasan" placeholder="Alasan"></textarea>
+<button onclick="simpan()">Tambah Blacklist</button>
+<div id="list"></div>
+</div>
+<script>
+function login(){
+ if(document.getElementById('pw').value==='admin123'){
+  document.getElementById('panel').style.display='block'; tampil();
+ }
+}
+function simpan(){
+ let db=JSON.parse(localStorage.getItem('ffml_db')||'{"freefire":{},"mobilelegends":{}}');
+ let g=game.value,id=idakun.value.trim();
+ db[g][id]={alasan:alasan.value,tanggal:new Date().toLocaleDateString()};
+ localStorage.setItem('ffml_db',JSON.stringify(db));
+ tampil();
+}
+function hapus(g,id){
+ let db=JSON.parse(localStorage.getItem('ffml_db'));
+ delete db[g][id];
+ localStorage.setItem('ffml_db',JSON.stringify(db));
+ tampil();
+}
+function tampil(){
+ let db=JSON.parse(localStorage.getItem('ffml_db')||'{"freefire":{},"mobilelegends":{}}');
+ let html='';
+ for(let g in db){for(let id in db[g]){
+ html+=`<p>${g} | ${id} <button onclick="hapus('${g}','${id}')">Hapus</button></p>`;
+ }}
+ document.getElementById('list').innerHTML=html;
+}
+</script></body></html>

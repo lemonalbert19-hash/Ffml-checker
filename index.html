@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FFML Checker</title>
+<style>
+body{background:#121212;color:#fff;font-family:Arial;max-width:800px;margin:auto;padding:20px}
+input,select,button,textarea{width:100%;padding:10px;margin:6px 0}
+.card{border:1px solid #444;padding:15px;margin-top:10px}
+</style></head><body>
+<h1>FFML Checker</h1>
+<select id="game"><option value="freefire">Free Fire</option><option value="mobilelegends">Mobile Legends</option></select>
+<input id="idakun" placeholder="Masukkan ID akun">
+<button onclick="cek()">Cek</button>
+<div id="hasil"></div>
+<script>
+function cek(){
+ let db=JSON.parse(localStorage.getItem('ffml_db')||'{"freefire":{},"mobilelegends":{}}');
+ let g=document.getElementById('game').value;
+ let id=document.getElementById('idakun').value.trim();
+ let h=document.getElementById('hasil');
+ if(db[g][id]){
+   let d=db[g][id];
+   h.innerHTML='<div class="card">🚨 AKUN TERLAPOR<br>ID:'+id+'<br>Alasan:'+d.alasan+'<br>Tanggal:'+d.tanggal+'</div>';
+ }else{
+   h.innerHTML='<div class="card">✅ Tidak ditemukan dalam database blacklist.</div>';
+ }
+}
+</script></body></html>
